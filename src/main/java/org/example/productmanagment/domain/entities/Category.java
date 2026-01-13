@@ -13,11 +13,24 @@ public class Category {
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
+    // Constructor for creating a new category
     public Category(String name, String description) {
         this.name = name;
         this.description = description;
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
+        validateCategory();
+    }
+
+    // Constructor for setting all fields (e.g., loading from DB or in-memory repository)
+    public Category(Long id, String name, String description,
+                    LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        validateCategory();
     }
 
     private void validateCategory() {
@@ -37,8 +50,27 @@ public class Category {
             this.description = description;
         }
         this.updatedAt = LocalDateTime.now();
-
         validateCategory();
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 
     @Override

@@ -22,9 +22,7 @@ public class ProductManagementService implements ProductManagement {
         this.categoryRepository = categoryRepository;
     }
 
-    @Override
-    public Product createProduct(CreateProductCommand command) {
-
+    public void createProduct(CreateProductCommand command) {
         Double price = Double.parseDouble(command.getPrice());
         Integer stock = Integer.parseInt(command.getStockQuantity());
         Long categoryId = Long.parseLong(command.getCategoryId());
@@ -40,7 +38,7 @@ public class ProductManagementService implements ProductManagement {
                 category
         );
 
-        return productRepository.save(product);
+        productRepository.save(product);
     }
 
     @Override
