@@ -5,6 +5,7 @@ import org.example.productmanagment.application.port.in.interafces.CategoryManag
 import org.example.productmanagment.application.port.in.interafces.ProductManagement;
 import org.example.productmanagment.application.port.in.web.requests.CreateProductRequest;
 import org.example.productmanagment.domain.entities.Category;
+import org.example.productmanagment.domain.entities.Product;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,9 +25,9 @@ public class ProductController {
     }
 
     @PostMapping
-    public Category create(@RequestBody CreateProductRequest request) {
+    public Product create(@RequestBody CreateProductRequest request) {
 
-        CreateProductCommand command = new CreateProductCommand(
+        var command = new CreateProductCommand(
                 request.getName(),
                 request.getDescription(),
                 request.getPrice(),
