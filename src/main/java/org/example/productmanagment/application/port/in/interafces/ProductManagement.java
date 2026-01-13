@@ -7,7 +7,7 @@ import org.example.productmanagment.domain.entities.Product;
 import java.util.List;
 
 public interface ProductManagement {
-    Product createProduct(CreateProductCommand command);
+    void createProduct(CreateProductCommand command);
 
     Product updateProduct(Long id, UpdateProductCommand command);
 
