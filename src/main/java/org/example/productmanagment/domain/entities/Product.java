@@ -10,12 +10,12 @@ public class Product {
     private String description;
     private Double price;
     private Integer stockQuantity;
-    private Category category;
+    private String category;
     private Instant createdAt;
     private Instant updatedAt;
 
     public Product(String name, String description, Double price,
-                   Integer stockQuantity, Category category) {
+                   Integer stockQuantity, String category) {
         this.name = name;
         this.description = description;
         this.price = price;
@@ -26,7 +26,7 @@ public class Product {
     }
 
     public Product(Long id, String name, String description, Double price,
-                   Integer stockQuantity, Category category,
+                   Integer stockQuantity, String category,
                    Instant createdAt, Instant updatedAt) {
         this.id = id;
         this.name = name;
@@ -59,7 +59,7 @@ public class Product {
         return stockQuantity;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
@@ -82,15 +82,5 @@ public class Product {
     @Override
     public int hashCode() {
         return Objects.hash(id);
-    }
-
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", stockQuantity=" + stockQuantity +
-                '}';
     }
 }

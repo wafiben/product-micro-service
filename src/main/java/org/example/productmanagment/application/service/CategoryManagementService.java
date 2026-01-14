@@ -7,6 +7,9 @@ import org.example.productmanagment.domain.entities.Category;
 
 import java.util.List;
 
+import org.springframework.stereotype.Service;
+
+@Service
 public class CategoryManagementService implements CategoryManagement {
     @Override
     public Category createCategory(CreateCategoryCommand command) {

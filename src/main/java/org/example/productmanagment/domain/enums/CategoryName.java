@@ -1,8 +1,7 @@
-package org.example.productmanagment.domain.name;
+package org.example.productmanagment.domain.enums;
 
 public enum CategoryName {
     ELECTRONICS,
     CLOTHING,
-    FOOD,
     BOOKS,
 }

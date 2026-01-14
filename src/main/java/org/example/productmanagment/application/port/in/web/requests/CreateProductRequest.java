@@ -5,18 +5,18 @@ public class CreateProductRequest {
     private String description;
     private String price;
     private String stockQuantity;
-    private String categoryId;
+    private String categoryName;
 
     public CreateProductRequest() {
     }
 
     public CreateProductRequest(String name, String description, String price,
-                                String stockQuantity, String categoryId) {
+                                String stockQuantity, String categoryName) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.stockQuantity = stockQuantity;
-        this.categoryId = categoryId;
+        this.categoryName = categoryName;
     }
 
     // Getters & Setters
@@ -52,11 +52,11 @@ public class CreateProductRequest {
         this.stockQuantity = stockQuantity;
     }
 
-    public String getCategoryId() {
-        return categoryId;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }
