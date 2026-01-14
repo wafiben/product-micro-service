@@ -6,35 +6,31 @@ import org.example.productmanagment.application.port.in.interafces.ProductManage
 import org.example.productmanagment.application.port.in.web.requests.CreateProductRequest;
 import org.example.productmanagment.domain.entities.Category;
 import org.example.productmanagment.domain.entities.Product;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 @RequestMapping("/products")
 public class ProductController {
-    private final CategoryManagement categoryService;
     private final ProductManagement productManagement;
 
-    public ProductController(CategoryManagement categoryService,
-                             ProductManagement productManagement) {
-        this.categoryService = categoryService;
+    public ProductController(ProductManagement productManagement) {
         this.productManagement = productManagement;
     }
 
     @PostMapping
-    public Product create(@RequestBody CreateProductRequest request) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public void create(@RequestBody CreateProductRequest request) {
 
         var command = new CreateProductCommand(
                 request.getName(),
                 request.getDescription(),
                 request.getPrice(),
                 request.getStockQuantity(),
-                request.getCategoryId()
+                request.getCategoryName()
         );
-
-        return this.productManagement.createProduct(command);
+        this.productManagement.createProduct(command);
     }
 }

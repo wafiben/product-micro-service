@@ -7,38 +7,46 @@ import org.example.productmanagment.application.port.out.CategoryRepository;
 import org.example.productmanagment.application.port.out.ProductRepository;
 import org.example.productmanagment.domain.entities.Category;
 import org.example.productmanagment.domain.entities.Product;
+import org.example.productmanagment.domain.enums.CategoryName;
 import org.example.productmanagment.domain.errors.CategoryNotFoundError;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
+@Service
 public class ProductManagementService implements ProductManagement {
-
     private final ProductRepository productRepository;
-    private final CategoryRepository categoryRepository;
 
-    public ProductManagementService(ProductRepository productRepository,
-                                    CategoryRepository categoryRepository) {
+    public ProductManagementService(ProductRepository productRepository) {
         this.productRepository = productRepository;
-        this.categoryRepository = categoryRepository;
     }
 
     public void createProduct(CreateProductCommand command) {
         Double price = Double.parseDouble(command.getPrice());
         Integer stock = Integer.parseInt(command.getStockQuantity());
-        Long categoryId = Long.parseLong(command.getCategoryId());
-
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(CategoryNotFoundError::new).getCategory();
+        var categoryName = this.validateCategoryName(command.getCategoryName());
 
         Product product = new Product(
                 command.getName(),
                 command.getDescription(),
                 price,
                 stock,
-                category
+                Optional.ofNullable(categoryName)
+                        .map(CategoryName::name)
+                        .orElse(null)
         );
 
         productRepository.save(product);
+    }
+
+    private CategoryName validateCategoryName(String name) {
+        System.out.println("ee " +name);
+        try {
+            return CategoryName.valueOf(name.toUpperCase());
+        } catch (Exception e) {
+            throw new CategoryNotFoundError();
+        }
     }
 
     @Override

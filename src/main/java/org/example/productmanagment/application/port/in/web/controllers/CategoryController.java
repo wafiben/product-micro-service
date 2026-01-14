@@ -1,4 +1,5 @@
 package org.example.productmanagment.application.port.in.web.controllers;
+
 import org.example.productmanagment.application.port.in.command.CreateProductCommand;
 import org.example.productmanagment.application.port.in.interafces.CategoryManagement;
 import org.example.productmanagment.application.port.in.interafces.ProductManagement;
@@ -22,16 +23,16 @@ public class CategoryController {
     }
 
     @PostMapping
-    public Category create(@RequestBody CreateProductRequest request) {
+    public void create(@RequestBody CreateProductRequest request) {
 
         CreateProductCommand command = new CreateProductCommand(
                 request.getName(),
                 request.getDescription(),
                 request.getPrice(),
                 request.getStockQuantity(),
-                request.getCategoryId()
+                request.getCategoryName()
         );
 
-        return this.productManagement.createProduct(command);
+        this.productManagement.createProduct(command);
     }
 }

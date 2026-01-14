@@ -6,7 +6,7 @@ public class CreateProductCommand {
     private String description;
     private String price;           // String for validation at boundary
     private String stockQuantity;   // String for validation at boundary
-    private String categoryId;
+    private String categoryName;
 
     // Empty constructor (for JSON deserialization)
     public CreateProductCommand() {
@@ -18,16 +18,15 @@ public class CreateProductCommand {
             String description,
             String price,
             String stockQuantity,
-            String categoryId
+            String categoryName
     ) {
         this.name = name;
         this.description = description;
         this.price = price;
         this.stockQuantity = stockQuantity;
-        this.categoryId = categoryId;
+        this.categoryName = categoryName;
     }
 
-    // Getters and Setters
 
     public String getName() {
         return name;
@@ -61,11 +60,11 @@ public class CreateProductCommand {
         this.stockQuantity = stockQuantity;
     }
 
-    public String getCategoryId() {
-        return categoryId;
+    public String getCategoryName() {
+        return categoryName;
     }
 
-    public void setCategoryId(String categoryId) {
-        this.categoryId = categoryId;
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
     }
 }

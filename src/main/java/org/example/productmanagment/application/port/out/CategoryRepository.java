@@ -1,12 +1,13 @@
 package org.example.productmanagment.application.port.out;
 
+import org.example.productmanagment.domain.entities.Category;
 import org.example.productmanagment.domain.entities.Product;
 
 import java.util.List;
 import java.util.Optional;
 
 public interface CategoryRepository {
-    Product save(Product product);
+    void save(Category category);
 
     Optional<Product> findById(Long id);
 
