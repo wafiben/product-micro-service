@@ -26,7 +26,7 @@ public class ProductManagementTest {
         // Arrange
         Category category = new Category(
                 1L,
-                "Tech",
+                "ELECTRONICS",
                 "Tech products",
                 LocalDateTime.now(),
                 LocalDateTime.now()
@@ -38,7 +38,7 @@ public class ProductManagementTest {
                 "Gaming laptop",
                 "1200",
                 "10",
-                "1"
+                "ELECTRONICS"
         );
 
         // Act

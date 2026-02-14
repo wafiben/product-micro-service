@@ -1,4 +1,4 @@
-package org.example.productmanagment.application.port.in.web.requests;
+package org.example.productmanagment.application.port.in.web.requests.product;
 
 public class CreateProductRequest {
     private String name;
