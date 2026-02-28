@@ -50,12 +50,13 @@ public class CategoryManagementE2ETest extends AbstractIntegrationTest {
         List<Category> categories = categoryRepository.findAll();
         assertEquals(1, categories.size());
         assertEquals("ELECTRONICS", categories.get(0).getName());
+
+        System.out.println("DATABASE_URL: " + System.getenv("DATABASE_URL"));
     }
 
     @Test
     void shouldFindCategories() {
         String url = "http://localhost:" + port + "/categories";
-        // Créer deux catégories
         restTemplate.postForEntity(url, new CreateCategoryRequest("ELECTRONICS", "Tech"), String.class);
         restTemplate.postForEntity(url, new CreateCategoryRequest("FOOD", "Food products"), String.class);
 

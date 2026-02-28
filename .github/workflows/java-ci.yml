@@ -7,6 +7,7 @@ on:
       - 'feature/**'
   pull_request:
     branches: [ main ]
+  workflow_dispatch: # Permet de déclencher manuellement
 
 jobs:
   build:
@@ -36,18 +37,25 @@ jobs:
       - name: Build Docker image
         run: docker build --target runtime -t ${{ secrets.DOCKERHUB_USERNAME }}/product-micro-service:${{ github.sha }} -t ${{ secrets.DOCKERHUB_USERNAME }}/product-micro-service:latest .
 
-      - name: Tear down
-        run: docker compose down
-
       - name: Push Docker image
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/product-micro-service:${{ github.sha }}
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/product-micro-service:latest
 
-      - name: Deploy to Railway
+      # Étape de debug pour vérifier l'installation de Railway CLI
+      - name: Install Railway CLI and verify
         run: |
           curl -fsSL https://railway.app/install.sh | sh
-          railway up --service product-micro-service --detach
+          railway --version
+          railway whoami
         env:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
+
+      # Déploiement avec l'action officielle (recommandé)
+      - name: Deploy to Railway
+        uses: railwayapp/actions/deploy@v3
+        with:
+          service: product-micro-service
+          projectId: ${{ secrets.RAILWAY_PROJECT_ID }}
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
