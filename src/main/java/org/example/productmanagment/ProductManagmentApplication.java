@@ -11,8 +11,7 @@ public class ProductManagmentApplication {
     private static final Logger log = LoggerFactory.getLogger(ProductManagmentApplication.class);
 
     public static void main(String[] args) {
-        System.out.println("DATABASE_URL: " + System.getenv("DATABASE_URL"));
-        log.info("yepi yepi");
+        log.info("Aplication lunched");
         SpringApplication.run(ProductManagmentApplication.class, args);
     }
 }
