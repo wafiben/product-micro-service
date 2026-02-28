@@ -40,9 +40,8 @@ public class InMemoryProductRepository implements ProductRepository {
         var category = categories.stream()
                 .filter(cat -> cat.getName().equals(command.getCategoryName()))
                 .findFirst()
-                .orElseThrow(() -> {
-                    return new CategoryNotFoundError();
-                });
+                .orElseThrow(CategoryNotFoundError::new);
+
         Product product = new Product(
                 command.getName(),
                 command.getDescription(),
