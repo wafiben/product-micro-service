@@ -20,7 +20,7 @@ public class InMemoryProductRepository implements ProductRepository {
     }
 
     @Override
-    public Optional<Product> findById(Long id) {
+    public Optional<Product> findById(String id) {
         return Optional.empty();
     }
 
@@ -34,15 +34,15 @@ public class InMemoryProductRepository implements ProductRepository {
     }
 
     public void createProduct(CreateProductCommand command) {
-        // Convert values
         double price = Double.parseDouble(command.getPrice());
         int stock = Integer.parseInt(command.getStockQuantity());
 
         var category = categories.stream()
-                .filter(cat -> cat.getName().equals(command.getName()))
+                .filter(cat -> cat.getName().equals(command.getCategoryName()))
                 .findFirst()
-                .orElseThrow(CategoryNotFoundError::new);
-
+                .orElseThrow(() -> {
+                    return new CategoryNotFoundError();
+                });
         Product product = new Product(
                 command.getName(),
                 command.getDescription(),

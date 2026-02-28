@@ -1,7 +1,8 @@
 package org.example.productmanagment.application.port.out;
 
-import org.example.productmanagment.domain.entities.Category;
+import org.example.productmanagment.application.port.in.query.GetCategoryQuery;
 import org.example.productmanagment.domain.entities.Product;
+import org.example.productmanagment.domain.entities.Category;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,9 +10,13 @@ import java.util.Optional;
 public interface CategoryRepository {
     void save(Category category);
 
-    Optional<Product> findById(Long id);
+    Optional<Category> findById(String id);
 
-    List<Product> findAll();
+    List<Category> findAll();
 
     void deleteById(Long id);
+
+    List<Category> fetchCategories(GetCategoryQuery query);
+
+    void deleteAll();
 }

@@ -4,15 +4,10 @@ public class CreateProductCommand {
 
     private String name;
     private String description;
-    private String price;           // String for validation at boundary
+    private String price;
     private String stockQuantity;   // String for validation at boundary
     private String categoryName;
-
-    // Empty constructor (for JSON deserialization)
-    public CreateProductCommand() {
-    }
-
-    // Full constructor
+    
     public CreateProductCommand(
             String name,
             String description,
