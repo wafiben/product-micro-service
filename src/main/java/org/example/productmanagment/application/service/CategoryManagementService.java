@@ -46,7 +46,7 @@ public class CategoryManagementService implements CategoryManagement {
                 .orElseThrow(CategoryNotFoundError::new);
     }
 
-   
+
     public List<Category> getCategories(GetCategoryQuery query) {
         return this.categoryRepo.fetchCategories(query);
     }

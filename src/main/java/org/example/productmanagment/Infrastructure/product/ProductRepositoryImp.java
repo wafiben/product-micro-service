@@ -43,9 +43,9 @@ public class ProductRepositoryImp implements ProductRepository {
                 product.getId(),
                 product.getName(),
                 product.getDescription(),
-                product.getPrice(),
+                null,
                 product.getStockQuantity(),
-                product.getCategory()
+                null
         );
     }
 

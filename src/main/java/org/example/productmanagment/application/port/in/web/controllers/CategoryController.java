@@ -4,11 +4,10 @@ import org.example.productmanagment.application.port.in.command.CreateCategoryCo
 import org.example.productmanagment.application.port.in.interafces.CategoryManagement;
 import org.example.productmanagment.application.port.in.query.GetCategoryQuery;
 import org.example.productmanagment.application.port.in.web.requests.category.CreateCategoryRequest;
-import org.example.productmanagment.application.port.in.web.requests.category.GetCategoryRequest;
 import org.example.productmanagment.application.port.in.web.response.category.CategoryDto;
+import org.example.productmanagment.domain.entities.Category;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.example.productmanagment.domain.entities.Category;
 
 import java.util.List;
 
@@ -22,9 +21,10 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
-    @GetMapping("/:id")
-    public CategoryDto getCategories(@RequestBody GetCategoryRequest request) {
-        Category category = this.categoryService.getCategoryById(request.getId());
+
+    @GetMapping("/{id}")
+    public CategoryDto getCategoryById(@PathVariable String id) {
+        Category category = this.categoryService.getCategoryById(id);
 
         return new CategoryDto(
                 category.getId().toString(),

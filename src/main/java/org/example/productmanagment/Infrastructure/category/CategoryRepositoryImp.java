@@ -23,9 +23,15 @@ public class CategoryRepositoryImp implements CategoryRepository {
         this.categoryDataManagement.save(categoryData);
     }
 
-    @Override
     public Optional<Category> findById(String id) {
-        return Optional.empty();
+        return categoryDataManagement.findById(Long.valueOf(id))
+                .map(e -> new Category(
+                        e.getId(),
+                        e.getName(),
+                        e.getDescription(),
+                        e.getCreatedAt(),
+                        e.getUpdatedAt()
+                ));
     }
 
     public List<Category> findAll() {
