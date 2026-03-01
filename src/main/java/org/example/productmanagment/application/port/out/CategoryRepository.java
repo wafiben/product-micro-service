@@ -14,7 +14,7 @@ public interface CategoryRepository {
 
     List<Category> findAll();
 
-    void deleteById(Long id);
+    void deleteById(String id);
 
     List<Category> fetchCategories(GetCategoryQuery query);
 

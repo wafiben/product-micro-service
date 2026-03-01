@@ -58,4 +58,10 @@ public class CategoryController {
         );
         this.categoryService.createCategory(command);
     }
+
+    @DeleteMapping("/{id}")
+    public void deleteCategoryById(@PathVariable String id) {
+        Long convertedId = Long.valueOf(id);
+         this.categoryService.deleteCategory(convertedId);
+    }
 }

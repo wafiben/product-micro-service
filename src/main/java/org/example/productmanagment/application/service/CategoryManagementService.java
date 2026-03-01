@@ -35,11 +35,9 @@ public class CategoryManagementService implements CategoryManagement {
         return null;
     }
 
-    @Override
     public void deleteCategory(Long id) {
-
+        categoryRepo.deleteById(String.valueOf(id));
     }
-
 
     public Category getCategoryById(String id) {
         return categoryRepo.findById(id)

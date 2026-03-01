@@ -31,6 +31,11 @@ public class InMemoryCategoryRepository implements CategoryRepository {
         return List.of();
     }
 
+
+    public void deleteById(String id) {
+        categories.removeIf(category -> category.getId().toString().equals(id));
+    }
+
     public List<Category> fetchCategories(GetCategoryQuery query) {
         return categories.stream()
                 .filter(e -> query.getId() == null || e.getId().toString().equals(query.getId()))
@@ -50,9 +55,4 @@ public class InMemoryCategoryRepository implements CategoryRepository {
 
     }
 
-
-    @Override
-    public void deleteById(Long id) {
-
-    }
 }
