@@ -47,9 +47,10 @@ public class CategoryRepositoryImp implements CategoryRepository {
                 .toList();
     }
 
-    @Override
-    public void deleteById(Long id) {
 
+    public void deleteById(String id) {
+        Long idConverted = Long.valueOf(id);
+        categoryDataManagement.deleteById(idConverted);
     }
 
     public List<Category> fetchCategories(GetCategoryQuery query) {

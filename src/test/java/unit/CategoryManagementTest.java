@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -101,4 +102,15 @@ public class CategoryManagementTest {
         assertEquals(0, result.size());
     }
 
+    @Test
+    void shouldDeleteCategorieById() {
+        categoryRepository.save(new Category(1L, "ELECTRONICS", "Tech", LocalDateTime.now(), LocalDateTime.now()));
+
+        categoryManagement.deleteCategory(1L);
+
+        assertThrows(CategoryNotFoundError.class, () -> {
+            categoryManagement.getCategoryById("1");
+        });
+
+    }
 }

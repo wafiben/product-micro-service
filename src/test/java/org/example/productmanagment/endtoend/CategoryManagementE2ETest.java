@@ -5,6 +5,7 @@ import org.example.productmanagment.application.port.in.web.response.category.Ca
 import org.example.productmanagment.application.port.out.CategoryRepository;
 import org.example.productmanagment.domain.entities.Category;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,20 +51,18 @@ public class CategoryManagementE2ETest extends AbstractIntegrationTest {
         List<Category> categories = categoryRepository.findAll();
         assertEquals(1, categories.size());
         assertEquals("ELECTRONICS", categories.get(0).getName());
-
-        System.out.println("DATABASE_URL: " + System.getenv("DATABASE_URL"));
     }
 
     @Test
-    void shouldFindCategories() {
-        String url = "http://localhost:" + port + "/categories";
-        restTemplate.postForEntity(url, new CreateCategoryRequest("ELECTRONICS", "Tech"), String.class);
-        restTemplate.postForEntity(url, new CreateCategoryRequest("FOOD", "Food products"), String.class);
+    void shouldDeleteCategory() {
+        String baseUrl = "http://localhost:" + port + "/categories";
 
-        // GET /categories
-        ResponseEntity<CategoryDto[]> response = restTemplate.getForEntity(url, CategoryDto[].class);
+        restTemplate.postForEntity(baseUrl, new CreateCategoryRequest("ELECTRONICS", "Tech"), CategoryDto.class);
 
-        assertEquals(200, response.getStatusCode().value());
-        assertEquals(2, response.getBody().length);
+        String id = categoryRepository.findAll().get(0).getId().toString();
+
+        restTemplate.delete(baseUrl + "/" + id);
+
+        assertEquals(0, categoryRepository.findAll().size());
     }
 }
