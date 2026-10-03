@@ -1,6 +1,6 @@
 package org.example.productmanagment.domain.entities;
 
-
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
 
@@ -8,13 +8,13 @@ public class Product {
     private Long id;
     private String name;
     private String description;
-    private Double price;
+    private BigDecimal price;
     private Integer stockQuantity;
     private String category;
     private Instant createdAt;
     private Instant updatedAt;
 
-    public Product(String name, String description, Double price,
+    public Product(String name, String description, BigDecimal price,
                    Integer stockQuantity, String category) {
         this.name = name;
         this.description = description;
@@ -25,7 +25,7 @@ public class Product {
         this.updatedAt = Instant.now();
     }
 
-    public Product(Long id, String name, String description, Double price,
+    public Product(Long id, String name, String description, BigDecimal price,
                    Integer stockQuantity, String category,
                    Instant createdAt, Instant updatedAt) {
         this.id = id;
@@ -51,7 +51,7 @@ public class Product {
         return description;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 

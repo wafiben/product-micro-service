@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 @RestController
 @RequestMapping("/products")
 public class ProductController {
+
     private final ProductManagement productManagement;
+
 
     public ProductController(ProductManagement productManagement) {
         this.productManagement = productManagement;
