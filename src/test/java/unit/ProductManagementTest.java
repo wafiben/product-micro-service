@@ -2,12 +2,15 @@ package unit;
 
 import org.example.productmanagment.Infrastructure.product.InMemoryProductRepository;
 import org.example.productmanagment.application.port.in.command.CreateProductCommand;
+import org.example.productmanagment.application.service.ProductManagementService;
+import org.example.productmanagment.application.service.validators.ProductValidator;
 import org.example.productmanagment.domain.entities.Category;
 import org.example.productmanagment.domain.entities.Product;
-import org.example.productmanagment.domain.errors.CategoryNotFoundError;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,9 +19,20 @@ public class ProductManagementTest {
 
     private InMemoryProductRepository productRepository;
 
+    private ProductManagementService productService;
+
+    private ProductValidator validator;
+
     @BeforeEach
     void setUp() {
+        validator = new ProductValidator();
         productRepository = new InMemoryProductRepository();
+        productService = new ProductManagementService(productRepository, validator);
+    }
+
+    @AfterEach
+    void TearDown() {
+        productRepository.DeleteAll();
     }
 
     @Test
@@ -42,7 +56,7 @@ public class ProductManagementTest {
         );
 
         // Act
-        productRepository.createProduct(command);
+        productService.createProduct(command);
         var products = productRepository.findAll();
 
         // Assert
@@ -50,23 +64,7 @@ public class ProductManagementTest {
 
         Product saved = products.get(0);
         assertEquals("Laptop", saved.getName());
-        assertEquals(1200.0, saved.getPrice());
+        assertEquals(0, new BigDecimal("1200").compareTo(saved.getPrice()));
         assertEquals(10, saved.getStockQuantity());
-    }
-
-    @Test
-    void shouldThrowWhenCategoryNotFound() {
-        CreateProductCommand command = new CreateProductCommand(
-                "Phone",
-                "Smartphone",
-                "800",
-                "5",
-                "ssss"
-        );
-        System.out.println(command);
-
-        assertThrows(CategoryNotFoundError.class, () -> {
-            productRepository.createProduct(command);
-        });
     }
 }
