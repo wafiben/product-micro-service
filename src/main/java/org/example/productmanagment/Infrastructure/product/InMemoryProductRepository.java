@@ -6,11 +6,13 @@ import org.example.productmanagment.domain.entities.Category;
 import org.example.productmanagment.domain.entities.Product;
 import org.example.productmanagment.domain.errors.CategoryNotFoundError;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 public class InMemoryProductRepository implements ProductRepository {
+
     private List<Product> products = new ArrayList<>();
 
     private final List<Category> categories = new ArrayList<>();
@@ -33,8 +35,16 @@ public class InMemoryProductRepository implements ProductRepository {
 
     }
 
+
+    public void DeleteAll() {
+        this.products.clear();
+    }
+
+
     public void createProduct(CreateProductCommand command) {
-        double price = Double.parseDouble(command.getPrice());
+
+        BigDecimal price = new BigDecimal(command.getPrice());
+
         int stock = Integer.parseInt(command.getStockQuantity());
 
         var category = categories.stream()

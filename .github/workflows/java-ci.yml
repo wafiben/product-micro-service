@@ -1,53 +1,54 @@
 name: Java CI
 
+# Déclenche le pipeline sur push vers main et feature/**, et sur PR vers main
 on:
   push:
     branches:
       - main
       - 'feature/**'
-  pull_request:
-    branches: [ main ]
+      - 'refactor/**'
+      - 'fix/**'
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
+      # Récupère le code source du repo
       - uses: actions/checkout@v3
 
+      # Installe Java 17 (Temurin = distribution Eclipse)
       - name: Set up JDK 17
         uses: actions/setup-java@v3
         with:
           java-version: '17'
           distribution: 'temurin'
 
+      # Lance les tests unitaires en excluant les tests end-to-end
       - name: Run unit tests
         run: mvn test -Dexcludes="**/endtoend/**"
 
+      # Compile et package le projet sans relancer les tests
       - name: Build with Maven
         run: mvn clean install -DskipTests
 
+      # Authentification sur Docker Hub avec les secrets GitHub
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      # Build l'image Docker avec deux tags :
+      # - le SHA du commit (version précise)
+      # - latest (version courante)
       - name: Build Docker image
-        run: docker build --target runtime -t ${{ secrets.DOCKERHUB_USERNAME }}/product-micro-service:${{ github.sha }} -t ${{ secrets.DOCKERHUB_USERNAME }}/product-micro-service:latest .
+        run: docker build --target runtime -t ${{ secrets.DOCKERHUB_USERNAME }}/product-managment:${{ github.sha }} -t ${{ secrets.DOCKERHUB_USERNAME }}/product-managment:latest .
 
-      - name: Tear down
-        run: docker compose down
-
+      # Push les deux tags vers Docker Hub
+      # Le déploiement sur Railway se fait manuellement :
+      # Railway → Service → Settings → Source → wafi111/product-managment:latest → Redeploy
       - name: Push Docker image
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/product-micro-service:${{ github.sha }}
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/product-micro-service:latest
-
-      - name: Deploy to Railway
-        run: |
-          curl -fsSL https://railway.app/install.sh | sh
-          railway up --service product-micro-service --detach
-        env:
-          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
-          RAILWAY_PROJECT_ID: ${{ secrets.RAILWAY_PROJECT_ID }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/product-managment:${{ github.sha }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/product-managment:latest

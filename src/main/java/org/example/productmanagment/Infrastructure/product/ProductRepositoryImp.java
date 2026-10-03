@@ -1,8 +1,11 @@
 package org.example.productmanagment.Infrastructure.product;
 
+import org.example.productmanagment.Infrastructure.category.CategoryJpaEntity;
 import org.example.productmanagment.Infrastructure.category.SpringDataCategoryRepository;
 import org.example.productmanagment.application.port.out.ProductRepository;
+import org.example.productmanagment.domain.entities.Category;
 import org.example.productmanagment.domain.entities.Product;
+import org.example.productmanagment.domain.errors.CategoryNotFoundError;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -10,10 +13,14 @@ import java.util.Optional;
 
 @Repository
 public class ProductRepositoryImp implements ProductRepository {
+
     private final SpringDataProductRepository productRepo;
 
-    public ProductRepositoryImp(SpringDataProductRepository productRepo) {
+    private final SpringDataCategoryRepository categoryRepository;
+
+    public ProductRepositoryImp(SpringDataProductRepository productRepo, SpringDataCategoryRepository categoryRepository) {
         this.productRepo = productRepo;
+        this.categoryRepository = categoryRepository;
     }
 
 
@@ -39,14 +46,20 @@ public class ProductRepositoryImp implements ProductRepository {
     }
 
     private ProductJpaEntity toEntityData(Product product) {
+        Long categoryId = categoryRepository.findByName(product.getCategory())
+                .map(CategoryJpaEntity::getId)
+                .orElseThrow(CategoryNotFoundError::new);
+        
+
         return new ProductJpaEntity(
                 product.getId(),
                 product.getName(),
                 product.getDescription(),
-                null,
+                product.getPrice(),
                 product.getStockQuantity(),
-                null
+                categoryId
         );
     }
+
 
 }

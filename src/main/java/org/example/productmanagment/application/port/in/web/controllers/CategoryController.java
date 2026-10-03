@@ -34,7 +34,7 @@ public class CategoryController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<CategoryDto> getAllCategories(
+    public List<CategoryDto> getAllCategories (
             @RequestParam(required = false) String id,
             @RequestParam(required = false) String name) {
 
@@ -62,6 +62,6 @@ public class CategoryController {
     @DeleteMapping("/{id}")
     public void deleteCategoryById(@PathVariable String id) {
         Long convertedId = Long.valueOf(id);
-         this.categoryService.deleteCategory(convertedId);
+        this.categoryService.deleteCategory(convertedId);
     }
 }
