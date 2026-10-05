@@ -1,7 +1,21 @@
-run the app + postgres : docker-compose up --build ==> this build the images of app and db test a
+## Local Docker Testing
 
-Run Container : docker run -p 8080:8080 user-service
+Build the Docker image locally:
 
-Application will be available at: http://localhost:8080
+```bash
+docker build --target runtime -t product-managment:local .
+```
 
-Docker Lifecycle Summary: Dockerfile → Docker Image → Docker Container
+Run the Docker container:
+
+```bash
+docker run --rm -p 8080:8080 product-managment:local
+```
+
+The application will then be available on:
+
+```text
+http://localhost:8080
+```
+
+The `--rm` option automatically removes the container when it is stopped.
