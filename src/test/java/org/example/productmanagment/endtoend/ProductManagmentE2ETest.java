@@ -3,7 +3,6 @@ package org.example.productmanagment.endtoend;
 import org.example.productmanagment.application.Endpoints;
 import org.example.productmanagment.application.port.in.web.requests.product.CreateProductRequest;
 import org.example.productmanagment.application.port.out.CategoryRepository;
-import org.example.productmanagment.application.port.out.ProductRepository;
 import org.example.productmanagment.domain.entities.Category;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,15 +27,12 @@ class ProductManagmentE2ETest extends AbstractIntegrationTest {
     @Autowired
     private CategoryRepository categoryRepository;
 
-    @Autowired
-    private ProductRepository productRepository;
 
     String url = baseUrl();
 
     @BeforeEach
     void setUp() {
         restTemplate = new RestTemplate();
-
         url = baseUrl() + Endpoints.PRODUCT;
     }
 
@@ -47,7 +43,7 @@ class ProductManagmentE2ETest extends AbstractIntegrationTest {
     }
 
     @Test
-    void shouldCreateProduct() {
+    void shouldCreateAndGetProducts() {
         // ARRANGE
         categoryRepository.save(new Category(
                 null,
@@ -69,8 +65,12 @@ class ProductManagmentE2ETest extends AbstractIntegrationTest {
         ResponseEntity<String> response = restTemplate.postForEntity(
                 url, request, String.class);
 
+        ResponseEntity<String> productsResponse = restTemplate.getForEntity(
+                url, String.class);
+
         // ASSERT
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        assertEquals(HttpStatus.OK, productsResponse.getStatusCode());
     }
 
     @Test
@@ -112,5 +112,4 @@ class ProductManagmentE2ETest extends AbstractIntegrationTest {
         assertTrue(exception.getResponseBodyAsString().contains("PRICE_NEGATIVE")
         );
     }
-
 }
