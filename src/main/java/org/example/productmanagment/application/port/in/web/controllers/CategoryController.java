@@ -15,6 +15,7 @@ import java.util.List;
 @RequestMapping("/categories")
 public class CategoryController {
 
+
     private final CategoryManagement categoryService;
 
     public CategoryController(CategoryManagement categoryService) {
