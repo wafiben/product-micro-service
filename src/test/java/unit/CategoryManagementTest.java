@@ -105,13 +105,13 @@ public class CategoryManagementTest {
 
     @Test
     void shouldDeleteCategorieById() {
-        categoryRepository.save(new Category(1L, "ELECTRONICS", "Tech", LocalDateTime.now(), LocalDateTime.now()));
+        categoryRepository.save(new Category
+                (1L, "ELECTRONICS", "Tech", LocalDateTime.now(), LocalDateTime.now()));
 
         categoryManagement.deleteCategory(1L);
 
         assertThrows(CategoryNotFoundError.class, () -> {
             categoryManagement.getCategoryById("1");
         });
-
     }
 }

@@ -53,6 +53,7 @@ public class InMemoryProductRepository implements ProductRepository {
                 .orElseThrow(() -> {
                     return new CategoryNotFoundError();
                 });
+
         Product product = new Product(
                 command.getName(),
                 command.getDescription(),

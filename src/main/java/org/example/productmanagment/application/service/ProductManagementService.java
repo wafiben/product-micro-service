@@ -1,4 +1,5 @@
 package org.example.productmanagment.application.service;
+
 import org.example.productmanagment.application.port.in.command.CreateProductCommand;
 import org.example.productmanagment.application.port.in.command.UpdateProductCommand;
 import org.example.productmanagment.application.port.in.interafces.ProductManagement;
@@ -64,7 +65,6 @@ public class ProductManagementService implements ProductManagement {
 
     @Override
     public List<Product> getAllProducts() {
-        // TODO: Implement get all products logic
-        return null;
+        return productRepository.findAll();
     }
 }
