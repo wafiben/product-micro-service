@@ -57,7 +57,8 @@ public class ProductManagementTest {
 
         // Act
         productService.createProduct(command);
-        var products = productRepository.findAll();
+
+        var products = productService.getAllProducts();
 
         // Assert
         assertEquals(1, products.size());

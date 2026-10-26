@@ -40,7 +40,6 @@ public class CategoryManagementE2ETest extends AbstractIntegrationTest {
 
     @Test
     void shouldCreateCategory() {
-
         CreateCategoryRequest request = new CreateCategoryRequest("ELECTRONICS", "Test Description");
         ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
 
