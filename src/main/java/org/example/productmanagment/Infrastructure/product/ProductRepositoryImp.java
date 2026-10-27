@@ -8,8 +8,13 @@ import org.example.productmanagment.domain.entities.Product;
 import org.example.productmanagment.domain.errors.CategoryNotFoundError;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class ProductRepositoryImp implements ProductRepository {
@@ -36,7 +41,16 @@ public class ProductRepositoryImp implements ProductRepository {
 
     @Override
     public List<Product> findAll() {
-        return List.of();
+        Map<Long, String> categoryNames = categoryRepository.findAll()
+                .stream()
+                .collect(Collectors.toMap(
+                        CategoryJpaEntity::getId,
+                        CategoryJpaEntity::getName)
+                );
+
+        return productRepo.findAll().stream()
+                .map(e -> toDomain(e, categoryNames.get(e.getCategoryId())))
+                .toList();
     }
 
     @Override
@@ -44,11 +58,15 @@ public class ProductRepositoryImp implements ProductRepository {
 
     }
 
+    public void deleteAll() {
+        productRepo.deleteAll();
+    }
+
     private ProductJpaEntity toEntityData(Product product) {
         Long categoryId = categoryRepository.findByName(product.getCategory())
                 .map(CategoryJpaEntity::getId)
                 .orElseThrow(CategoryNotFoundError::new);
-        
+
 
         return new ProductJpaEntity(
                 product.getId(),
@@ -60,5 +78,23 @@ public class ProductRepositoryImp implements ProductRepository {
         );
     }
 
+    private Product toDomain(ProductJpaEntity e, String categoryName) {
+        return new Product(
+                e.getId(),
+                e.getName(),
+                e.getDescription(),
+                e.getPrice(),
+                e.getStockQuantity(),
+                categoryName,
+                toInstant(e.getCreatedAt()),
+                toInstant(e.getUpdatedAt())
+        );
+    }
 
+    private Instant toInstant(LocalDateTime value) {
+        return value == null ? null : value.atZone(ZoneId.systemDefault()).toInstant();
+    }
 }
+
+
+

@@ -1,5 +1,6 @@
 package org.example.productmanagment.application.port.in.web.controllers;
 
+import org.example.productmanagment.application.Endpoints;
 import org.example.productmanagment.application.port.in.command.CreateCategoryCommand;
 import org.example.productmanagment.application.port.in.interafces.CategoryManagement;
 import org.example.productmanagment.application.port.in.query.GetCategoryQuery;
@@ -12,9 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/categories")
+@RequestMapping(Endpoints.CATEGORY)
 public class CategoryController {
-
 
     private final CategoryManagement categoryService;
 
@@ -35,7 +35,7 @@ public class CategoryController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<CategoryDto> getAllCategories (
+    public List<CategoryDto> getAllCategories(
             @RequestParam(required = false) String id,
             @RequestParam(required = false) String name) {
 

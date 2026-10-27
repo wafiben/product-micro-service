@@ -8,7 +8,6 @@ import org.example.productmanagment.application.service.validators.ProductValida
 import org.example.productmanagment.domain.entities.Product;
 import org.springframework.stereotype.Service;
 
-
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -63,7 +62,6 @@ public class ProductManagementService implements ProductManagement {
         return null;
     }
 
-    @Override
     public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
