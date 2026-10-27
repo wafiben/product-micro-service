@@ -4,7 +4,7 @@ import org.example.productmanagment.application.Endpoints;
 import org.example.productmanagment.application.port.in.command.CreateProductCommand;
 import org.example.productmanagment.application.port.in.interafces.ProductManagement;
 import org.example.productmanagment.application.port.in.web.requests.product.CreateProductRequest;
-import org.example.productmanagment.domain.entities.Product;
+import org.example.productmanagment.application.port.in.web.response.product.ProductDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,7 +37,16 @@ public class ProductController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<Product> getAllProducts() {
-        return this.productManagement.getAllProducts();
+    public List<ProductDto> getAllProducts() {
+        return this.productManagement.getAllProducts()
+                .stream().map(
+                        product -> new ProductDto(
+                                product.getId().toString(),
+                                product.getName(),
+                                product.getPrice().toString(),
+                                product.getCategory()
+                        )).toList();
     }
 }
+
+

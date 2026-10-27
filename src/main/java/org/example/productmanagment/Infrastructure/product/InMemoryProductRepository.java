@@ -35,11 +35,14 @@ public class InMemoryProductRepository implements ProductRepository {
 
     }
 
+    @Override
+    public void deleteAll() {
+
+    }
 
     public void DeleteAll() {
         this.products.clear();
     }
-
 
     public void createProduct(CreateProductCommand command) {
 

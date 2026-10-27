@@ -3,7 +3,9 @@ package org.example.productmanagment.endtoend;
 import org.example.productmanagment.application.Endpoints;
 import org.example.productmanagment.application.port.in.web.requests.product.CreateProductRequest;
 import org.example.productmanagment.application.port.out.CategoryRepository;
+import org.example.productmanagment.application.port.out.ProductRepository;
 import org.example.productmanagment.domain.entities.Category;
+import org.example.productmanagment.domain.entities.Product;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -13,7 +15,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -26,6 +30,9 @@ class ProductManagmentE2ETest extends AbstractIntegrationTest {
 
     @Autowired
     private CategoryRepository categoryRepository;
+
+    @Autowired
+    private ProductRepository productRepository;
 
 
     String url = baseUrl();
@@ -40,6 +47,7 @@ class ProductManagmentE2ETest extends AbstractIntegrationTest {
     @AfterEach
     void tearDown() {
         categoryRepository.deleteAll();
+        productRepository.deleteAll();
     }
 
     @Test
@@ -63,14 +71,21 @@ class ProductManagmentE2ETest extends AbstractIntegrationTest {
 
         // ACT
         ResponseEntity<String> response = restTemplate.postForEntity(
-                url, request, String.class);
+                url, request, String.class
+        );
 
-        ResponseEntity<String> productsResponse = restTemplate.getForEntity(
-                url, String.class);
+        // ASSERT POST
+        assertEquals(201, response.getStatusCode().value());
 
-        // ASSERT
-        assertEquals(HttpStatus.CREATED, response.getStatusCode());
-        assertEquals(HttpStatus.OK, productsResponse.getStatusCode());
+        // ASSERT DATABASE
+        List<Product> products = productRepository.findAll();
+
+        assertEquals(1, products.size());
+        assertEquals("Laptop", products.get(0).getName());
+        assertEquals("Gaming laptop", products.get(0).getDescription());
+        assertEquals(0, new BigDecimal("1200").compareTo(products.get(0).getPrice()));
+        assertEquals(10, products.get(0).getStockQuantity());
+        assertEquals("ELECTRONICS", products.get(0).getCategory());
     }
 
     @Test
